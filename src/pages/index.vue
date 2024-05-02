@@ -1,67 +1,76 @@
 <template>
   <q-page>
     <div class="row window-height">
-      <div class="col flex flex-center">
-        <q-card flat :style="{ minWidth: '1000px' }">
-          <q-card-section>
-            <div
-              class="text-h1 text-weight-bold text-center flex justify-center items-center"
-            >
-              <span>별</span>
-              <span class="highlight">걸</span>
-              <span :style="$q.screen.gt.sm ? { 'margin-right': '1.5rem' } : {}"
-                >다</span
-              >
-              <span>줄</span>
-              <span class="highlight">이네</span>
+      <div
+        class="col flex justify-center items-center min-width-200px"
+        style="min-width: 1000px"
+      >
+        <q-card flat>
+          <div class="row">
+            <div>
+              <q-card-section>
+                <div
+                  class="text-h1 text-weight-bold text-center flex justify-center items-center q-mx-md"
+                >
+                  <span>별</span>
+                  <span
+                    class="highlight"
+                    style="margin-left: 0.5rem; margin-right: 0.5rem"
+                    >걸</span
+                  >
+                  <span>다</span>
+                  <span style="margin-left: 0.5rem">줄</span>
+                  <span class="highlight" style="margin-left: 0.5rem"
+                    >이네</span
+                  >
+                </div>
+              </q-card-section>
             </div>
-            <div class="text-subtitle2 text-grey">와주셔서 감사합니다☺️</div>
-          </q-card-section>
-          <q-card-section>
-            <q-form>
-              <div class="q-gutter-y-lg row">
-                <q-input
-                  filled
-                  label="이메일"
-                  hint="이메일을 입력해주세요~~"
-                ></q-input>
-                <q-input
-                  filled
-                  label="비밀번호"
-                  hint="비밀번호를 입력해주세요~~"
-                ></q-input>
-              </div>
-              <q-btn
-                label="로그인하기"
-                unelevated
-                color="primary"
-                size="lg"
-                class="full-width q-mt-lg"
-              />
-
-              <q-btn
-                label="회원가입"
-                flat
-                size="lg"
-                class="full-width q-mt-md"
-                to="/auth/sign-up"
-              />
-              <q-btn
-                label="대시보드로 이동"
-                flat
-                size="lg"
-                class="full-width q-mt-xs"
-                to="/"
-              />
-            </q-form>
-          </q-card-section>
+          </div>
+          <div class="row">
+            <q-card-section>
+              <q-form>
+                <div class="q-gutter-sm col-12 row items-center">
+                  <q-input
+                    class="col-grow"
+                    rounded
+                    outlined
+                    v-model="inputUrl"
+                    :label="
+                      inputUrl == ''
+                        ? 'URL을 입력해주세요'
+                        : isValidUrl
+                        ? 'URL'
+                        : '올바른 URL 형식이 아닙니다'
+                    "
+                    :color="
+                      inputUrl == '' ? 'primary' : isValidUrl ? 'green' : 'red'
+                    "
+                  />
+                  <q-btn color="red" round label="GO!" :disable="!isValidUrl" />
+                </div>
+              </q-form>
+            </q-card-section>
+          </div>
         </q-card>
       </div>
     </div>
   </q-page>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, computed } from 'vue';
+const inputUrl = ref('');
+
+const isValidUrl = computed(() => {
+  const urlPattern = new RegExp(
+    '^(https?:\\/\\/)([\\da-z\\.-]+\\.[a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$',
+    'i',
+  );
+  console.log(urlPattern.test(inputUrl.value));
+  return urlPattern.test(inputUrl.value);
+});
+</script>
 
 <style lang="scss" scoped>
 .highlight {
