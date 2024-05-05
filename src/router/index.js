@@ -4,8 +4,10 @@ import {
   createMemoryHistory,
   createWebHistory,
   createWebHashHistory,
-} from 'vue-router';
-import routes from './routes';
+} from 'vue-router/auto';
+import { setupLayouts } from 'virtual:generated-layouts';
+
+// import routes from './routes';
 
 /*
  * If not building with SSR mode, you can
@@ -25,12 +27,24 @@ export default route(function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
+    // routes,
     history: createHistory(process.env.VUE_ROUTER_BASE),
+    extendRoutes: routes => {
+      return setupLayouts(
+        routes.map(route => {
+          if (route.path.includes('admin')) {
+            route = {
+              ...route,
+              meta: {
+                ...route.meta,
+                layout: 'admin',
+              },
+            };
+          }
+          return route;
+        }),
+      );
+    },
   });
 
   return Router;
