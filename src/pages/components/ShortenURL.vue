@@ -46,6 +46,9 @@
 import { ref, computed } from 'vue';
 import URLDialog from './URLDialog.vue';
 import { getShortURL } from 'src/services/URLService';
+
+import { useAsyncState } from '@vueuse/core';
+
 const inputUrl = ref('');
 const urlPattern = new RegExp(
   '^(https?:\\/\\/)([\\da-z\\.-]+\\.[a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$',
