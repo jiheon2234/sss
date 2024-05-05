@@ -38,7 +38,7 @@
       </q-input>
     </div>
 
-    <URLDialog v-model="showURLDialog" :shortURL="shortURL" />
+    <URLDialog v-model="showURLDialog" :changedURL="changedURL" />
   </div>
 </template>
 
@@ -56,12 +56,16 @@ const isValidUrl = computed(() => {
 });
 
 const showURLDialog = ref(false);
-const shortURL = ref('');
+const changedURL = ref({
+  oldUrl: '',
+  newUrl: '',
+});
 
 const openURLDialog = async () => {
   const short_url = await getShortURL(inputUrl.value);
-  shortURL.value = short_url;
-  console.log(shortURL);
+  changedURL.value.oldUrl = inputUrl.value;
+  changedURL.value.newUrl = short_url;
+  inputUrl.value = '';
   showURLDialog.value = true;
 };
 </script>

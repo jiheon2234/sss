@@ -13,7 +13,16 @@
 
       <q-card-section class="q-px-xl q-pb-xl">
         <div class="text-h5 text-center text-weight-bold q-mb-xl">URL을 줄였음</div>
-        {{ shortURL }}
+        <!-- {{ changedURL.oldUrl }}
+        {{ changedURL.newUrl }} -->
+        <div class="row">
+          <div class="row">
+            <div class="col-2 text-primary">{{ changedURL.oldUrl.length }}11</div>
+            <div class="col-8">{{ changedURL.oldUrl }}</div>
+          </div>
+
+          <div class="col-8">{{ changedURL.newUrl }}</div>
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -25,11 +34,15 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  shortURL: {
-    type: String,
-    default: 'sssssss',
+  changedURL: {
+    type: Object,
+    default: () => ({
+      oldUrl: '',
+      newUrl: 'sss',
+    }),
   },
 });
+
 const emit = defineEmits(['update:modelValue']);
 </script>
 
