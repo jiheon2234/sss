@@ -8,35 +8,35 @@
       <span>줄</span>
       <span class="highlight">임</span>
     </div>
-
-    <div class="row justify-center q-mt-xl" style="min-height: 100px">
-      <q-input
-        class="col-5"
-        outlined
-        v-model="inputUrl"
-        :error="1 || !isValidUrl"
-        rounded
-        color="blue"
-        :label="true || !isValidUrl ? '올바른 url 형식이 아닙니다' : 'URL을 입력해주세요'"
-        placeholder="URL을 입력해주세요"
-      >
-        <template v-slot:prepend>
-          <q-icon name="link" />
-        </template>
-        <template v-slot:append>
-          <q-btn
-            dense
-            rounded
-            unelevated
-            color="orange"
-            label="Go!"
-            :loading="false"
-            v-show="1 || !isValidUrl"
-            @click="openURLDialog"
-          />
-        </template>
-      </q-input>
-    </div>
+    <q-form @submit.prevent="openURLDialog">
+      <div class="row justify-center q-mt-xl" style="min-height: 100px">
+        <q-input
+          class="col-5"
+          outlined
+          v-model="inputUrl"
+          :error="!isValidUrl"
+          rounded
+          color="blue"
+          :label="!isValidUrl ? '올바른 url 형식이 아닙니다' : 'URL을 입력해주세요!!!!'"
+          placeholder="URL을 입력해주세요"
+        >
+          <template v-slot:prepend>
+            <q-icon name="link" />
+          </template>
+          <template v-slot:append>
+            <q-btn
+              dense
+              rounded
+              unelevated
+              color="orange"
+              label="Go!"
+              :loading="isLoading"
+              v-show="inputUrl.length === 0 || isValidUrl"
+            />
+          </template>
+        </q-input>
+      </div>
+    </q-form>
 
     <URLDialog v-model="showURLDialog" :changedURL="changedURL" />
   </div>
@@ -46,14 +46,13 @@
 import { ref, computed } from 'vue';
 import URLDialog from './URLDialog.vue';
 import { getShortURL } from 'src/services/URLService';
-
+import { useQuasar } from 'quasar';
 import { useAsyncState } from '@vueuse/core';
 
+const $q = useQuasar();
+
 const inputUrl = ref('');
-const urlPattern = new RegExp(
-  '^(https?:\\/\\/)([\\da-z\\.-]+\\.[a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$',
-  'i',
-);
+const urlPattern = /^(https?|ftp):\/\/(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(?::\d{1,5})?(?:\/[^\s]*)?$/;
 const isValidUrl = computed(() => {
   return inputUrl.value.length === 0 || urlPattern.test(inputUrl.value);
 });
@@ -64,12 +63,25 @@ const changedURL = ref({
   newUrl: '',
 });
 
-const openURLDialog = async () => {
-  const short_url = await getShortURL(inputUrl.value);
-  changedURL.value.oldUrl = inputUrl.value;
-  changedURL.value.newUrl = short_url;
-  inputUrl.value = '';
-  showURLDialog.value = true;
+const { isLoading, execute } = useAsyncState(getShortURL, null, {
+  immediate: false,
+  throwError: false,
+  onSuccess: short_url => {
+    changedURL.value.oldUrl = inputUrl.value;
+    changedURL.value.newUrl = short_url;
+    inputUrl.value = '';
+    showURLDialog.value = true;
+  },
+});
+
+const openURLDialog = () => {
+  $q.notify({
+    message: '서버에 갔다오는 중...',
+    color: 'primary',
+    position: 'top',
+    timeout: 500,
+  });
+  execute(0, inputUrl.value);
 };
 </script>
 
