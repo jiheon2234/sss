@@ -7,8 +7,8 @@
 </template>
 
 <script setup>
-import ShortenURL from './components/ShortenURL.vue';
-import SlangCount from './components/slang/SlangCount.vue';
+import ShortenURL from 'src/components/ShortenURL.vue';
+import SlangCount from 'src/components/slang/SlangCount.vue';
 </script>
 
 <style lang="scss" scoped></style>
