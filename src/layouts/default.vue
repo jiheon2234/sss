@@ -21,6 +21,14 @@
       </q-toolbar>
     </q-header>
 
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left">
+      <!-- drawer content -->
+    </q-drawer>
+
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right">
+      <!-- drawer content -->
+    </q-drawer>
+
     <q-page-container :style="pageContainerStyles">
       <router-view />
     </q-page-container>
@@ -43,7 +51,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-console.log(route.meta?.width);
+// console.log(route.meta?.width);
 
 const pageContainerStyles = computed(() => ({
   maxWidth: route.meta?.width || '1920px',

@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-xl">
+    <div class="row"></div>
     <ShortenURL />
     <SlangCount />
   </q-page>

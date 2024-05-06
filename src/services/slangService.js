@@ -1,9 +1,6 @@
-import data from './tmpData.json';
+import tmpData from './tmpData.json';
 
-export async function getCntWithGroup() {
-  const mydata = {};
-  Object.keys(data).forEach(key => {
-    mydata[key] = data[key].data.length;
-  });
+export async function getAllCharCnt() {
+  const mydata = Object.keys(tmpData).map(key => ({ key: key, cnt: tmpData[key].data.length }));
   return mydata;
 }
