@@ -41,10 +41,9 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { getCntWithGroup } from 'src/services/slangService';
+
 const route = useRoute();
 console.log(route.meta?.width);
-console.log(getCntWithGroup());
 
 const pageContainerStyles = computed(() => ({
   maxWidth: route.meta?.width || '1920px',
