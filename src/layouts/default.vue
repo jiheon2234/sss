@@ -5,7 +5,7 @@
         <q-btn flat dense>
           <q-toolbar-title>
             <q-avatar>
-              <img src="logo.png" />
+              <img src="/logo.png" />
             </q-avatar>
             별다줄
           </q-toolbar-title>
