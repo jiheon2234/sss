@@ -5,7 +5,7 @@
         <q-btn flat dense>
           <q-toolbar-title>
             <q-avatar>
-              <img src="logo.png" />
+              <img src="/logo.png" />
             </q-avatar>
             별다줄
           </q-toolbar-title>
@@ -20,6 +20,14 @@
         <q-avatar color="warning" text-color="white">J</q-avatar>
       </q-toolbar>
     </q-header>
+
+    <q-drawer show-if-above v-model="leftDrawerOpen" side="left">
+      <!-- drawer content -->
+    </q-drawer>
+
+    <q-drawer show-if-above v-model="rightDrawerOpen" side="right">
+      <!-- drawer content -->
+    </q-drawer>
 
     <q-page-container :style="pageContainerStyles">
       <router-view />
@@ -43,7 +51,7 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-console.log(route.meta?.width);
+// console.log(route.meta?.width);
 
 const pageContainerStyles = computed(() => ({
   maxWidth: route.meta?.width || '1920px',
